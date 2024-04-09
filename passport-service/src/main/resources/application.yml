@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: PASSPORT-SERVICE
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/passports
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    service-uri:
+      defaultZone: http://localhost:8761/eureka/
