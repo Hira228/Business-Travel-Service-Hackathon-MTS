@@ -1,5 +1,6 @@
 package bookingservice.booking.entity;
 
+import bookingservice.booking.state.BookingState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -39,4 +40,6 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "arrival_flight_id")
     Flight arrivalFlight;
+
+    BookingState bookingState;
 }

@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import passportservice.passport.entity.Passport;
+//import passportservice.passport.kafka.KafkaProducer;
+import passportservice.passport.kafka.KafkaProducer;
 import passportservice.passport.repository.PassportRepository;
 import passportservice.passport.web.dto.PassportDTO;
 import passportservice.passport.web.dto.PassportError;
@@ -21,15 +23,16 @@ public class PassportServiceImpl implements PassportService{
     private final PassportRepository passportRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     private final PassportMapper passportMapper;
+    private final KafkaProducer kafkaProducer;
     @Override
     public ResponseEntity<?> createPassportData(PassportDTO passportDTO, BindingResult bindingResult,
                                                 String token) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new PassportError(HttpStatus.BAD_REQUEST.value(), "Please fill in all fields for registration."), HttpStatus.BAD_REQUEST);
         }
-        System.out.println(token.substring(7));
+
         Object id = redisTemplate.opsForValue().get(token.substring(7));
-        System.out.println(id.toString());
+
         if(id == null) return new ResponseEntity<>(new PassportError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
 
         if (passportRepository.existsByPassportNumber(passportDTO.getPassportNumber())) {
@@ -40,9 +43,17 @@ public class PassportServiceImpl implements PassportService{
             return new ResponseEntity<>(new PassportError(HttpStatus.BAD_REQUEST.value(), "You already have your passport information filled out."), HttpStatus.BAD_REQUEST);
         }
 
+        System.out.println(passportDTO);
+
         Passport passport = passportMapper.toEntity(passportDTO);
         passport.setUserId(UUID.fromString(id.toString()));
+        passport.setPassportNumber(passportDTO.getPassportNumber());
+        passport.setFirstName(passportDTO.getFirstName());
+        passport.setLastName(passportDTO.getLastName());
+        passport.setDateOfBirth(passportDTO.getDateOfBirth());
+        System.out.println(passport);
         passportRepository.save(passport);
+        kafkaProducer.sendDataUser(passport);
 
         return new ResponseEntity<>(new PassportError(HttpStatus.OK.value(), "The passport data was successfully created."), HttpStatus.OK);
     }

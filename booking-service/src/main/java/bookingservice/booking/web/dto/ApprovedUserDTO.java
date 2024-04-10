@@ -1,8 +1,7 @@
-package passportservice.passport.web.dto;
+package bookingservice.booking.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,16 +11,17 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 import java.util.UUID;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PassportDTO {
+public class ApprovedUserDTO {
 
-    @JsonIgnore
+    @NotNull
     UUID id;
 
-    @JsonIgnore
+    @NotNull
     UUID userId;
 
     @NotNull
@@ -35,4 +35,5 @@ public class PassportDTO {
 
     @NotNull
     LocalDate dateOfBirth;
+
 }

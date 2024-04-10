@@ -1,6 +1,6 @@
-package passportservice.passport.web.dto;
+package bookingservice.booking.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -8,31 +8,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PassportDTO {
-
-    @JsonIgnore
+@Table(name = "approved_users")
+public class ApprovedUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
-    @JsonIgnore
+    @NotNull
     UUID userId;
 
     @NotNull
-    Long passportNumber;
-
-    @NotNull
+    @Size(max = 20)
     String firstName;
 
     @NotNull
+    @Size(max = 20)
     String lastName;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dateOfBirth;
 }
