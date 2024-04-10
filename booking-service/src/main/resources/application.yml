@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: BOOKING-SERVICE
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/booking
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-uri:
+      defaultZone: http://localhost:8761/eureka/
