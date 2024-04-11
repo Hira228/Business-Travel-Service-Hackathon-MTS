@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: DEPOSIT-SERVICE
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/deposit
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    service-uri:
+      defaultZone: http://localhost:8761/eureka/

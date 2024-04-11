@@ -1,11 +1,11 @@
-package bookingservice.booking;
+package depositservice.deposit;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BookingApplication {
+public class DepositApplication {
     public static void main(String[] args) {
-        SpringApplication.run(BookingApplication.class, args);
+        SpringApplication.run(DepositApplication.class, args);
     }
 }
