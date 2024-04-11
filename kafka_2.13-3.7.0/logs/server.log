@@ -1,0 +1,18 @@
+[2024-04-11 21:43:01,797] INFO Terminating process due to signal SIGHUP (org.apache.kafka.common.utils.LoggingSignalHandler)
+[2024-04-11 21:43:01,800] INFO [ZooKeeperClient Kafka server] Closing. (kafka.zookeeper.ZooKeeperClient)
+[2024-04-11 21:43:01,799] INFO Opening socket connection to server localhost/127.0.0.1:2181. (org.apache.zookeeper.ClientCnxn)
+[2024-04-11 21:43:01,806] WARN Session 0x0 for server localhost/127.0.0.1:2181, Closing socket connection. Attempting reconnect except it is a SessionExpiredException. (org.apache.zookeeper.ClientCnxn)
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:973)
+	at org.apache.zookeeper.ClientCnxnSocketNIO.doTransport(ClientCnxnSocketNIO.java:344)
+	at org.apache.zookeeper.ClientCnxn$SendThread.run(ClientCnxn.java:1289)
+[2024-04-11 21:43:01,812] INFO shutting down (kafka.server.KafkaServer)
+[2024-04-11 21:43:01,816] ERROR Fatal error during KafkaServer shutdown. (kafka.server.KafkaServer)
+java.lang.IllegalStateException: Kafka server is still starting up, cannot shut down!
+	at kafka.server.KafkaServer.shutdown(KafkaServer.scala:944)
+	at kafka.Kafka$.$anonfun$main$3(Kafka.scala:103)
+	at kafka.utils.Exit$.$anonfun$addShutdownHook$1(Exit.scala:38)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[2024-04-11 21:43:01,817] ERROR Halting Kafka. (kafka.Kafka$)

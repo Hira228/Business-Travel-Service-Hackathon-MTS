@@ -12,6 +12,7 @@
     <artifactId>auth</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>auth</name>
+    <url>http://maven.apache.org</url>
     <description>Authentication Service</description>
     <properties>
         <java.version>17</java.version>

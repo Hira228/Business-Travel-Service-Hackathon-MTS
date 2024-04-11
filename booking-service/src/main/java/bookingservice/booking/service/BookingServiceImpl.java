@@ -66,6 +66,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public ResponseEntity<?> acceptBooking(String token, BookingDTO bookingDTO, BindingResult bindingResult) {
+        System.out.println(bookingDTO);
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new BookingError(HttpStatus.BAD_REQUEST.value(), "Please fill in all fields for booking."), HttpStatus.BAD_REQUEST);
         }
@@ -110,8 +111,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public ResponseEntity<?> cancelBooking(String token, BookingDTO bookingDTO, BindingResult bindingResult) {
+        System.out.println(bookingDTO);
 
-        if(UUID.fromString(Objects.requireNonNull(redisTemplate.opsForValue().get(token.substring(7))).toString()) != bookingDTO.getUserId()) {
+        UUID userIdFromToken = UUID.fromString(Objects.requireNonNull(redisTemplate.opsForValue().get(token.substring(7))).toString());
+        if (!userIdFromToken.equals(bookingDTO.getUserId())) {
             return new ResponseEntity<>(new BookingError(HttpStatus.NOT_FOUND.value(), "Booking not found."), HttpStatus.NOT_FOUND);
         }
 
@@ -146,7 +149,7 @@ public class BookingServiceImpl implements BookingService {
 
             bookingRepository.save(booking);
 
-            return ResponseEntity.ok("Booking cancelled successfully.");
+            return ResponseEntity.ok("Booking accepted successfully.");
         } else {
             return new ResponseEntity<>(new BookingError(HttpStatus.NOT_FOUND.value(), "Booking not found."), HttpStatus.NOT_FOUND);
         }
@@ -163,7 +166,7 @@ public class BookingServiceImpl implements BookingService {
 
             bookingRepository.save(booking);
 
-            return ResponseEntity.ok("Booking cancelled successfully.");
+            return ResponseEntity.ok("Booking rejected successfully.");
         } else {
             return new ResponseEntity<>(new BookingError(HttpStatus.NOT_FOUND.value(), "Booking not found."), HttpStatus.NOT_FOUND);
         }

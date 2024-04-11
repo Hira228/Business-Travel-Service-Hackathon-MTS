@@ -22,7 +22,6 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookingDTO {
 
-    @JsonIgnore
     UUID id;
 
     @NotNull
@@ -34,16 +33,12 @@ public class BookingDTO {
     @NotNull
     Long days;
 
-
     Hotel hotel;
-
 
     Flight departureFlight;
 
-
     Flight arrivalFlight;
 
-    @NotNull
     BookingState bookingState;
 
     Long price;

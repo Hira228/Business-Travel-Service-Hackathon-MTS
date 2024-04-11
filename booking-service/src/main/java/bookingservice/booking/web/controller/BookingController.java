@@ -69,7 +69,7 @@ public class BookingController {
         return bookingService.getMyBookings(authorizationHeader);
     }
 
-    @GetMapping("get-flights-in-a-to-b/{nameA}/{nameB}")
+    @GetMapping("/get-flights-in-a-to-b/{nameA}/{nameB}")
     public ResponseEntity<List<Flight>> getAllFlightInAtoB(@PathVariable String nameA,
                                                            @PathVariable String nameB) {
         return bookingService.getAllFlightInAtoB(nameA, nameB);
