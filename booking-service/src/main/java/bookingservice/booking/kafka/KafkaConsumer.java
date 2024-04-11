@@ -46,13 +46,11 @@ public class KafkaConsumer {
     public void listenerUserData(String userData) {
 
         try {
-            System.out.println(userData + "!!!user DATA!!!");
+
             ApprovedUserDTO approvedUserDTO = objectMapper.readValue(userData, ApprovedUserDTO.class);
 
-            System.out.println(approvedUserDTO + "!!!approvedUserDTO!!!");
             ApprovedUser approvedUser = approvedUserMapper.toEntity(approvedUserDTO);
 
-            System.out.println(approvedUser + "!!!ApprovedUser!!!");
             approvedUserRepository.save(approvedUser);
 
         } catch (Exception e) {

@@ -3,10 +3,10 @@ package gateway.gateway.filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.*;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
@@ -26,7 +26,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public GatewayFilter apply(Config config) {
 
 
-
         return (((exchange, chain) -> {
             try {
                 String authHeader = exchange.getRequest().getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
@@ -34,12 +33,25 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 HttpHeaders headers = new HttpHeaders();
                 headers.set(HttpHeaders.AUTHORIZATION, authHeader);
 
-                ResponseEntity<?> responseEntity = restTemplate.exchange(
-                        "http://localhost:8000/auth/validate",
-                        HttpMethod.GET,
-                        new HttpEntity<>(headers),
-                        ResponseEntity.class
-                );
+                String path = exchange.getRequest().getURI().getPath();
+                ResponseEntity<?> responseEntity = null;
+
+                if(path.contains("/admin/")) {
+                    responseEntity = restTemplate.exchange(
+                            "http://localhost:8000/auth/admin",
+                            HttpMethod.GET,
+                            new HttpEntity<>(headers),
+                            ResponseEntity.class
+                    );
+                }
+                else {
+                    responseEntity = restTemplate.exchange(
+                            "http://localhost:8000/auth/validate",
+                            HttpMethod.GET,
+                            new HttpEntity<>(headers),
+                            ResponseEntity.class
+                    );
+                }
 
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     System.out.println("User accepted");

@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -27,19 +29,24 @@ public class Booking {
     UUID userId;
 
     @NotNull
+    LocalDate date;
+
+    @NotNull
+    Long days;
+
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     Hotel hotel;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "departure_flight_id")
     Flight departureFlight;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "arrival_flight_id")
     Flight arrivalFlight;
 
     BookingState bookingState;
+
+    Long price;
 }

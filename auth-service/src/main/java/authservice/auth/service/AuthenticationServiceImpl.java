@@ -1,11 +1,12 @@
 package authservice.auth.service;
 
-import authservice.auth.web.dto.AuthenticationRequest;
 import authservice.auth.exceptions.AuthError;
 import authservice.auth.exceptions.BadRequestException;
 import authservice.auth.exceptions.UnauthorizedException;
+import authservice.auth.kafka.KafkaProducer;
 import authservice.auth.utils.JwtTokenUtils;
 import authservice.auth.web.dto.AuthenticationDTO;
+import authservice.auth.web.dto.AuthenticationRequest;
 import authservice.auth.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,8 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -29,6 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtTokenUtils jwtTokenUtils;
     private final AuthenticationManager authenticationManager;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final KafkaProducer kafkaProducer;
 
 
     @Override
@@ -60,8 +60,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             ));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
+
+            if(redisTemplate.opsForValue().get(authenticationRequest.getUsername()) != null) {
+                kafkaProducer.updateDataUserId(redisTemplate.opsForValue().get(authenticationRequest.getUsername()).toString());
+            }
+
             String token = jwtTokenUtils.generateToken(userDetails);
             redisTemplate.opsForValue().set(authenticationRequest.getUsername(), token);
+
+            kafkaProducer.sendDataUserId(token, userService.findByUsername(authenticationRequest.getUsername()).getId());
 
             return ResponseEntity.ok(new AuthenticationDTO(token));
         } catch (BadCredentialsException err) {

@@ -2,8 +2,19 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: passport-service
+          uri: lb://PASSPORT-SERVICE
+          predicates:
+            - Path=/passport/**
+          filters:
+            - AuthenticationFilter
 
-
+        - id: booking-service
+          uri: lb://BOOKING-SERVICE
+          predicates:
+            - Path=/booking/**
+          filters:
+            - AuthenticationFilter
 
         - id: authenticate-service
           uri: lb://AUTH-SERVICE

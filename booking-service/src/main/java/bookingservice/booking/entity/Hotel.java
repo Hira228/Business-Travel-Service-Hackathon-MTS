@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -26,11 +27,7 @@ public class Hotel {
     UUID id;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate date;
-
-    @NotNull
-    Integer numberOfDays;
+    String name;
 
     @NotNull
     Long price;

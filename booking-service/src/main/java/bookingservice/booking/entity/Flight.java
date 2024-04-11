@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -34,5 +35,8 @@ public class Flight {
     @NotNull
     @Size(max = 20)
     String departureCity;
+
+    @NotNull
+    @Size(max = 20)
     String arrivalCity;
 }

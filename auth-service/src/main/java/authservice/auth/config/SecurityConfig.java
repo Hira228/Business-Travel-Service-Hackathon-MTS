@@ -16,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static authservice.auth.config.EncoderConfig.passwordEncoder;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -32,6 +34,7 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers("/auth/signIn", "/auth/signUp").permitAll()
                                 .requestMatchers("/auth/validate").authenticated()
+                                .requestMatchers("/auth/admin").hasAuthority("ROLE_ADMIN")
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
@@ -42,7 +45,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(EncoderConfig.passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userService);
         return daoAuthenticationProvider;
     }

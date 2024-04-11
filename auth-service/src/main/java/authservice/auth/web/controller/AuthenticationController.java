@@ -29,7 +29,13 @@ public class AuthenticationController {
 
     @GetMapping("/validate")
     @PreAuthorize("hasAuthority('CLIENT')")
-    public ResponseEntity<?> validateToken() {
+    public ResponseEntity<?> validateTokenClient() {
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> validateTokenAdmin() {
         return ResponseEntity.ok().build();
     }
 
