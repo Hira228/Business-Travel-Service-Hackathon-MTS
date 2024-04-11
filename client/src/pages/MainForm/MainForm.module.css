@@ -1,0 +1,23 @@
+.container {
+  width: 80vw;
+  height: 80%;
+  margin-top: -25%;
+  position: relative; /* Добавлено */
+}
+
+.content {
+  line-height: 1.5; /* Изменено */
+  text-align: center;
+  border-radius: 8px;
+  border: 1px dashed #d9d9d9;
+  margin-top: 16px;
+  padding: 16px; /* Добавлено */
+  max-height: 60vh; /* Добавлено */
+  overflow-y: auto; /* Добавлено */
+}
+
+.subtitle {
+  color: #bfbfbf;
+  font-size: 14px;
+  margin-top: 8px;
+}

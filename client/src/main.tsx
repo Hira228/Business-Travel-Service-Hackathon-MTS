@@ -1,32 +1,17 @@
-import React from 'react';
+import { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AppRouter from './components/AppRouter';
+import { BrowserRouter } from 'react-router-dom';
+import UserStore from './store/userStore';
 import './index.css';
-import SignIn from './pages/SignIn/SignIn.tsx';
-import SignUp from './pages/SignUp/SignUp.tsx';
-import NotFound from './pages/NotFound/index.tsx';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <SignUp />,
-  },
-  {
-    path: '*',
-    element: <NotFound />,
-  },
-  {
-    path: '/signUp',
-    element: <SignUp />,
-  },
-  {
-    path: '/signIn',
-    element: <SignIn />,
-  },
-]);
+export const Context = createContext<any | null>(null);
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
+  <Context.Provider value={{ user: new UserStore() }}>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
     <div className="back" />
-  </React.StrictMode>,
+  </Context.Provider>,
 );

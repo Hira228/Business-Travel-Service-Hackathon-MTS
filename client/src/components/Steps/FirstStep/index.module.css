@@ -1,0 +1,22 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column; /* Изменяем направление на вертикальное для мобильных устройств */
+  gap: 25px;
+}
+
+.card {
+  max-width: 70%; /* Убираем flex: 1, чтобы не занимал все доступное пространство */
+  margin: 0 auto; /* Центрируем карточки */
+}
+
+@media (min-width: 768px) {
+  .cardContainer {
+    flex-direction: row; /* Возвращаем горизонтальное направление для компьютера */
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .card {
+    max-width: calc(50% - 12.5px); /* Половина ширины с учетом отступа для компьютера */
+  }
+}

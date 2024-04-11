@@ -1,16 +1,41 @@
 import { Card, Button, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.css';
+import { APIHOST } from '../../utils/consts';
+import { observer } from 'mobx-react-lite';
 
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
+const SignUp = observer(() => {
+  const navigate = useNavigate();
 
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+  const onFinish = async (values) => {
+    try {
+      const response = await fetch(`${APIHOST}/auth/signUp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
 
-function SignUp() {
+      if (response.ok) {
+        // Обработка успешной регистрации
+        console.log('Регистрация прошла успешно');
+        navigate('/signIn'); // Перенаправление на страницу входа
+      } else {
+        // Обработка временного неудачного ответа
+        console.error('Регистрация не удалась');
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+    }
+    navigate('/signIn');
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
   return (
     <Card style={{ width: 480, margin: 'auto', textAlign: 'center' }}>
       <div className={styles.topModule}>
@@ -19,8 +44,8 @@ function SignUp() {
       </div>
 
       <Form
-        name="normal_login"
-        className="login-form"
+        name="normal_register"
+        className="register-form"
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
@@ -66,6 +91,6 @@ function SignUp() {
       </Form>
     </Card>
   );
-}
+});
 
 export default SignUp;
