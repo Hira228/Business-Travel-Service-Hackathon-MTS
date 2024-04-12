@@ -1,0 +1,23 @@
+.container {
+  width: 80vw;
+  height: 80%;
+  margin-top: -25%;
+  position: relative;
+}
+
+.content {
+  line-height: 30px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px dashed #d9d9d9;
+  margin-top: 16px;
+  padding: 16px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.subtitle {
+  color: #bfbfbf;
+  font-size: 14px;
+  margin-top: 8px;
+}

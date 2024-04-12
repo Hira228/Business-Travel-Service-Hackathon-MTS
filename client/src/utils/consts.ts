@@ -1,0 +1,6 @@
+export const ADMIN__ROUTE = '/journey'
+export const ADMIN__PAGE = '/admin/home'
+export const LOGIN__ROUTE = '/signIn'
+export const REGISTRATION__ROUTE = '/signUp'
+export const NOT_FOUND = '*'
+export const APIHOST = 'http://localhost:8080'
