@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  auth:
+    build: ./auth-service
+    container_name: auth-service
+    environment:
+      SERVER_PORT: 8000
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/authentication
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - eureka
+    networks:
+      - app
+    restart: unless-stopped
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka
+    networks:
+      - app
+    restart: unless-stopped
+
+  booking:
+    build: ./booking-service
+    container_name: booking-service
+    environment:
+      SERVER_PORT: 8000
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+      - eureka
+    networks:
+      - app
+    restart: unless-stopped
+
+  passport:
+    build: ./passport-service
+    container_name: passport-service
+    environment:
+      SERVER_PORT: 8000
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/passports
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - eureka
+    networks:
+      - app
+    restart: unless-stopped
+
+  eureka:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - app
+    restart: unless-stopped
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+    networks:
+      - app
+    restart: unless-stopped
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - app
+    restart: unless-stopped
+
+  redis1:
+    image: redis:latest
+    container_name: redis1
+    ports:
+      - "6379:6379"
+    networks:
+      - app
+    restart: unless-stopped
+
+  redis2:
+    image: redis:latest
+    container_name: redis2
+    ports:
+      - "6380:6379"
+    networks:
+      - app
+    restart: unless-stopped
+
+  redis3:
+    image: redis:latest
+    container_name: redis3
+    ports:
+      - "6381:6379"
+    networks:
+      - app
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:14-bookworm
+    container_name: postgres
+    environment:
+      POSTGRES_DB: "authentication,booking,passports"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "--quiet"]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - app
+    restart: unless-stopped
+
+networks:
+  app:

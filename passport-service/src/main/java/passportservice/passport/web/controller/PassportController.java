@@ -15,13 +15,13 @@ public class PassportController {
     private final PassportService passportService;
 
     @PostMapping("/create-passport-data")
-    public ResponseEntity<?> signUP(@Valid @RequestBody PassportDTO passportDTO, BindingResult bindingResult,
+    public ResponseEntity<?> createPassportData(@Valid @RequestBody PassportDTO passportDTO, BindingResult bindingResult,
                                     @RequestHeader("Authorization") String authorizationHeader) {
         return passportService.createPassportData(passportDTO, bindingResult, authorizationHeader);
     }
 
     @GetMapping("/get-passport-data")
-    public ResponseEntity<?> signIn(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<?> getPassportData(@RequestHeader("Authorization") String authorizationHeader) {
         return passportService.getPassportData(authorizationHeader);
     }
 }

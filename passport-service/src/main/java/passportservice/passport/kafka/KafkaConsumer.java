@@ -17,16 +17,16 @@ public class KafkaConsumer {
 
     RedisTemplate<String, Object> redisTemplate;
 
-    @KafkaListener(topics = "user-id-passport", groupId = "user-id-passport-group")
+    @KafkaListener(topics = "user-id", groupId = "user-id-group")
     public void listenerId(ConsumerRecord<String, String> data) {
         if (data.key() != null && data.value() != null) {
             redisTemplate.opsForValue().set(data.key(), data.value());
         } else {
-            log.debug("'user-id-passport' came up with zero values.");
+            log.debug("'user-id' came up with zero values.");
         }
     }
 
-    @KafkaListener(topics = "user-id-passport-update", groupId = "user-id-passport-group")
+    @KafkaListener(topics = "user-id-update", groupId = "user-id-group")
     public void listenerIdUpdate(String key) {
             redisTemplate.delete(key);
     }
