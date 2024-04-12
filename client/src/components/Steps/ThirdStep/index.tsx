@@ -1,68 +1,58 @@
-import { useState } from 'react';
-import { Card, Button, Upload, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import styles from './index.module.css';
+import React, { useState, useEffect } from 'react';
+import { Card, Spin, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { checkBusinessTripApproval } from '../../../api/bookingApi';
 
-const ThirdStep = () => {
-  const [receivedMoney, setReceivedMoney] = useState('');
-  const [spentMoney, setSpentMoney] = useState('');
-  const [files, setFiles] = useState([]);
+const fakeApproval = () => {
+  return Math.random() < 0.5;
+};
 
-  const handleReceivedMoneyChange = (e) => {
-    setReceivedMoney(e.target.value);
-  };
+const ThirdStep: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [approved, setApproved] = useState<boolean | null>(null);
+  const navigation = useNavigate();
 
-  const handleSpentMoneyChange = (e) => {
-    setSpentMoney(e.target.value);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        try {
+          const isApproved = await checkBusinessTripApproval();
+          setApproved(isApproved);
+          setLoading(false);
+          if (!isApproved) {
+            // Если командировка не одобрена, перенаправляем на первый шаг
+            message.warning('Ваша командировка не одобрена. Перенаправляем на первый шаг.');
+            setTimeout(() => {
+              navigation('/first-step');
+            }, 3000); // Таймаут для перенаправления
+          } else {
+            message.success('Ваша командировка одобрена! Фанфары!');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          message.error('Ошибка при проверке одобрения командировки');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    setTimeout(() => {
+      setApproved(fakeApproval());
+      setLoading(false);
+    }, 2000);
 
-  const handleFileChange = (info) => {
-    let fileList = [...info.fileList];
-    setFiles(fileList);
-  };
-
-  const handleSave = () => {
-    // Здесь отправляем файлы на сервер
-    console.log('Sending files:', files);
-    // Сбрасываем состояние после отправки
-    setReceivedMoney('');
-    setSpentMoney('');
-    setFiles([]);
-    message.success('Данные успешно сохранены');
-  };
+    fetchData();
+  }, []);
 
   return (
-    <div className={styles.container}>
-      <Card title="Командировочные расходы" className={styles.card}>
-        <Upload
-          onChange={handleFileChange}
-          multiple={true}
-          fileList={files}
-          showUploadList={{ showRemoveIcon: true }}>
-          <Button icon={<UploadOutlined />}>Загрузить файлы</Button>
-        </Upload>
-      </Card>
-      <Card title="Авансовый отчет" className={styles.card}>
-        <div className={styles.inputContainer}>
-          <label htmlFor="receivedMoney">Денег получено:</label>
-          <input
-            id="receivedMoney"
-            type="text"
-            value={receivedMoney}
-            onChange={handleReceivedMoneyChange}
-          />
-          <span>руб.</span>
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="spentMoney">Денег израсходовано:</label>
-          <input id="spentMoney" type="text" value={spentMoney} onChange={handleSpentMoneyChange} />
-          <span>руб.</span>
-        </div>
-        <Button type="primary" onClick={handleSave}>
-          Сохранить
-        </Button>
-      </Card>
-    </div>
+    <Card title="Подождите" style={{ width: '100%', textAlign: 'center' }}>
+      <Spin spinning={loading} />
+      {approved !== null && (
+        <p>{approved ? 'Ваша командировка одобрена! 🎉' : 'Ваша командировка не одобрена. 😔'}</p>
+      )}
+    </Card>
   );
 };
 

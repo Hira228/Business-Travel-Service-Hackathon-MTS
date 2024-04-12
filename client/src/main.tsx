@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import UserStore from './store/userStore';
 import './index.css';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Context = createContext<any | null>(null);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

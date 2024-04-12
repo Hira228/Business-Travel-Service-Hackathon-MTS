@@ -1,0 +1,18 @@
+.container {
+  display: grid;
+  grid-area: 'a b', 'c b';
+  gap: 20px;
+  padding: 20px;
+}
+
+.profile {
+  grid-column: 1 / span 3;
+}
+
+.dashboard {
+  grid-column: 1 / span 2;
+}
+
+.creation {
+  grid-column: 3;
+}

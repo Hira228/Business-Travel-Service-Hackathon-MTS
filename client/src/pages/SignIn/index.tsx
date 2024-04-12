@@ -43,12 +43,11 @@ const SignIn = observer(() => {
 
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          user.setUser(userData); // Сохранение данных пользователя в объект user
+          user.setUser(userData);
         } else {
           console.error('Не удалось получить данные пользователя');
         }
       } else {
-        // Обработка временного неудачного ответа
         console.error('Вход не удался');
       }
     } catch (error) {

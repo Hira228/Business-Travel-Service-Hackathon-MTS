@@ -19,11 +19,9 @@ const SignUp = observer(() => {
       });
 
       if (response.ok) {
-        // Обработка успешной регистрации
         console.log('Регистрация прошла успешно');
-        navigate('/signIn'); // Перенаправление на страницу входа
+        navigate('/signIn');
       } else {
-        // Обработка временного неудачного ответа
         console.error('Регистрация не удалась');
       }
     } catch (error) {

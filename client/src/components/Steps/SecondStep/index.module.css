@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+}
+
+.cardsContainer {
+  width: 100%;
+  min-height: 60%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-direction: row;
+}
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px; /* Максимальная ширина карточек */
+}
+
+.buttonContainer {
+  margin-top: 16px;
+}
+
+.card {
+  width: calc(33.33% - 20px);
+}
+
+.select {
+  width: 100%;
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}

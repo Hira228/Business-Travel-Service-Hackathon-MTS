@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, message, Steps, theme } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styles from './MainForm.module.css';
-import FirstStep from '../../components/Steps/FirstStep';
-import ThirdStep from '../../components/Steps/ThirdStep';
-// Импортируйте остальные компоненты шагов
+import { FirstStep, SecondStep, FourthStep, FifthStep, ThirdStep } from '../../components/Steps';
 
 const MainForm: React.FC = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [showNextButton, setShowNextButton] = useState(true);
 
+  useEffect(() => {
+    setCurrent(0);
+  }, []);
   const next = () => {
     setCurrent(current + 1);
+    console.log('gone');
   };
 
   const prev = () => {
     setCurrent(current - 1);
   };
-
+  console.log(current);
   const stepsList = [
     {
       title: 'Назначение командировки',
@@ -34,21 +36,21 @@ const MainForm: React.FC = () => {
       content: () => (
         <>
           <p>Забронируйте услуги</p>
-          {/* Второй компонент шага */}
-          <Button onClick={() => setShowNextButton(true)}>Change State</Button>
+
+          <SecondStep />
         </>
       ),
     },
     {
       title: 'Согласование командировки',
-      content: () => <p>Подождите...</p>,
+      content: () => <ThirdStep />,
     },
     {
       title: 'Авансовые средства',
       content: () => (
         <>
           <p>Зачисление авансовых средств</p>
-          <ThirdStep />
+          <FourthStep />
           <Button onClick={() => setShowNextButton(true)}>Change State</Button>
         </>
       ),
@@ -58,8 +60,8 @@ const MainForm: React.FC = () => {
       content: () => (
         <>
           <p>Дождитесь выпуска приказа</p>
-          {/* Компонент для этого шага */}
-          <ThirdStep />
+
+          <FifthStep />
         </>
       ),
     },
@@ -68,8 +70,8 @@ const MainForm: React.FC = () => {
       content: () => (
         <>
           <p>Заполните и предоставьте необходимые документы</p>
-          {/* Компонент для этого шага */}
-          <ThirdStep />
+
+          <FourthStep />
         </>
       ),
     },
@@ -111,12 +113,14 @@ const MainForm: React.FC = () => {
       <div className={`${styles.content}`} style={contentStyle}>
         {stepsList[current].content()}
       </div>
-      <div style={{ marginTop: 24, textAlign: 'right' }}>
+      <div style={{ marginTop: 24, textAlign: 'left' }}>
         {current > 0 && (
           <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
             Previous
           </Button>
         )}
+      </div>
+      <div style={{ marginTop: -24, textAlign: 'right' }}>
         {showNextButton && current < stepsList.length - 1 && (
           <Button type="primary" onClick={() => next()}>
             Next
