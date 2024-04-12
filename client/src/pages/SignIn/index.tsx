@@ -31,7 +31,7 @@ const SignIn = observer(() => {
         // Обработка успешного ответа
         console.log('Вход успешен');
         user.setIsAuth(true);
-        navigate('/jorney');
+        navigate('/journey');
 
         // Запрос на сервер для получения данных пользователя
         const userResponse = await fetch(`${APIHOST}/user`, {
@@ -56,7 +56,8 @@ const SignIn = observer(() => {
 
     // test
     user.setIsAuth(true);
-    navigate('/jorney');
+
+    navigate('/journey');
   };
 
   const onFinishFailed = (errorInfo) => {

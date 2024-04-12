@@ -17,17 +17,14 @@ export const authRoutes = [
 ]
 export const publicRoutes = [
     {
-        path:LOGIN__ROUTE,
+        path: '/',
         Component: SignIn
     },
     {
-        path: ADMIN__ROUTE,
-        Component: MainForm 
+        path:LOGIN__ROUTE,
+        Component: SignIn
     },
-    {
-        path: ADMIN__PAGE,
-        Component: LeaderDashboard
-    },
+
     {
         path:REGISTRATION__ROUTE,
         Component:SignUp
