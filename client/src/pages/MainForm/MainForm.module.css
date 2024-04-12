@@ -6,7 +6,7 @@
 }
 
 .content {
-  line-height: 1.5; /* Изменено */
+  line-height: 30px; /* Изменено */
   text-align: center;
   border-radius: 8px;
   border: 1px dashed #d9d9d9;

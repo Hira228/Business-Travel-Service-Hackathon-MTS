@@ -98,7 +98,7 @@ const MainForm: React.FC = () => {
   const contentStyle: React.CSSProperties = {
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,
-    lineHeight: '260px',
+    lineHeight: '60px',
     textAlign: 'center',
     borderRadius: token.borderRadiusLG,
     border: `1px dashed ${token.colorBorder}`,
